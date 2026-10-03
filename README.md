@@ -9,3 +9,5 @@ git clone https://github.com/mhathebeyondfangame-source/launcher-to-termux.git
 DISPLAY=:0 python launcher.py
 
 launcher fast :  DISPLAY=:0 python ~/launcher-to-termux/launcher.py
+
+requires having termux-x11
