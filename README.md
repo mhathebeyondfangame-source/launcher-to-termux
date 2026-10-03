@@ -6,4 +6,4 @@ termux-setup-storage I pkg update && pkg upgrade -y  I pkg install python python
 
 git clone https://github.com/mhathebeyondfangame-source/launcher-to-termux.git
 
-python launcher.py
+DISPLAY=:0 python launcher.py
