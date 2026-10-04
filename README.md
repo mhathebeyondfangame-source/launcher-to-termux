@@ -1,3 +1,5 @@
+A transmission problem on the app so not usable, I'm currently working on it
+
 # launcher-to-termux
 play beta test
 
