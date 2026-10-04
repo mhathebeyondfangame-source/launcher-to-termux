@@ -87,11 +87,11 @@ font_info = pygame.font.SysFont(None, 18)
 # --- Liste des jeux ---
 GAMES = [
     {
-        "id": "gta6",
+        "id": "gtavi",
         "title": "Grand Theft Auto VI",
-        "filename": "gta6",
-        "zip_name": "gta6.zip",
-        "exec_cmd": "bash ./installed_games/gta6/start.sh",
+        "filename": "gta 6",  # Nom exact du fichier image dans le dossier icon/
+        "zip_name": "gtavi.zip",
+        "exec_cmd": "",
         "info": "Bienvenue à Vice City ! Grand Theft Auto VI vous plonge dans le monde ouvert le plus vaste."
     },
     {
@@ -167,7 +167,7 @@ def load_game_images():
         for filepath in all_files:
             fname = os.path.splitext(os.path.basename(filepath))[0].lower().replace(" ", "")
             ext = os.path.splitext(filepath)[1].lower()
-            if (fname == target_name or fname == game["id"].lower()) and ext in extensions:
+            if fname == target_name and ext in extensions:
                 found_path = filepath
                 break
 
@@ -258,19 +258,36 @@ def download_and_install_game(game):
 # --- Lancement du Jeu sécurisé ---
 def launch_game(game):
     global show_error_popup, error_message
-    exec_script = os.path.join(GAMES_DIR, game["id"], "start.sh")
     
-    # Vérification de l'existence du script d'exécution
-    if not os.path.exists(exec_script):
-        show_error_popup = True
-        error_message = "Désolé, mais Termux ne peut pas se permettre cela.\n(Script start.sh introuvable dans le dossier du jeu)"
-        return
+    # GTA VI : Lancement spécifique du fichier Python
+    if game["id"] == "gtavi":
+        py_script = os.path.join(GAMES_DIR, "gtavi", "gtavi.py")
+        
+        if not os.path.exists(py_script):
+            show_error_popup = True
+            error_message = "Désolé, mais Termux ne peut pas se permettre cela.\n(Fichier gtavi.py introuvable)"
+            return
 
-    try:
-        process = subprocess.Popen(game["exec_cmd"], shell=True)
-    except Exception as e:
-        show_error_popup = True
-        error_message = "Désolé, mais Termux ne peut pas se permettre cela.\n(Erreur d'exécution de la commande)"
+        try:
+            subprocess.Popen([sys.executable, py_script])
+        except Exception as e:
+            show_error_popup = True
+            error_message = f"Désolé, mais Termux ne peut pas se permettre cela.\n(Erreur d'exécution : {e})"
+            
+    # Tous les autres jeux : Cherche start.sh
+    else:
+        exec_script = os.path.join(GAMES_DIR, game["id"], "start.sh")
+        
+        if not os.path.exists(exec_script):
+            show_error_popup = True
+            error_message = "Désolé, mais Termux ne peut pas se permettre cela.\n(Script start.sh introuvable)"
+            return
+
+        try:
+            subprocess.Popen(game["exec_cmd"], shell=True)
+        except Exception as e:
+            show_error_popup = True
+            error_message = "Désolé, mais Termux ne peut pas se permettre cela.\n(Erreur d'exécution de la commande)"
 
 def uninstall_game(game):
     game_id = game["id"]
@@ -487,7 +504,6 @@ while running:
         screen.blit(font_btn.render("Info sur le jeu", True, COLOR_TEXT_ACTIVE), (900, 425))
         render_multiline_text(screen, game["info"], 900, 470, 280, font_info, COLOR_TEXT_NORMAL)
 
-    # Affichage de la pop-up d'erreur si déclenchée
     draw_error_popup()
 
     pygame.display.flip()
