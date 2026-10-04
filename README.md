@@ -13,3 +13,7 @@ DISPLAY=:0 python launcher.py
 launcher fast :  DISPLAY=:0 python ~/launcher-to-termux/launcher.py
 
 requires having termux-x11
+
+start serveur python -m http.server 8080     
+
+In the launcher.py file, you have to manually change the IP because it's random in there
