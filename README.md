@@ -3,17 +3,25 @@ A transmission problem on the app so not usable, I'm currently working on it
 # launcher-to-termux
 play beta test
 
-
-termux-setup-storage I pkg update && pkg upgrade -y  I pkg install python python-tkinter x11-repo -y  I  pkg install xfce4 xfce4-terminal -y  I  pip install pygame requests 
-
-git clone https://github.com/mhathebeyondfangame-source/launcher-to-termux.git
-
-DISPLAY=:0 python launcher.py
-
-launcher fast :  DISPLAY=:0 python ~/launcher-to-termux/launcher.py
-
 requires having termux-x11
+install : 
+
+pkg install x11-repo -y && apt update
+pkg install dpkg pkg-config build-essential python libx11 libxext libxrandr sdl2 sdl2-image sdl2-mixer sdl2-ttf freetype fontconfig xorgproto termux-x11-nightly -y
+
+
+pip install setuptools wheel
+pip install pygame --no-binary :all: --no-build-isolation
+
+font = pygame.font.Font(None, 36)
+
+
+termux-x11 :0 &
+export DISPLAY=:0
+cd ~/launcher-to-termux
+python launcher.py
+
 
 start serveur python -m http.server 8080     
 
-In the launcher.py file, you have to manually change the IP because it's random in there
+
