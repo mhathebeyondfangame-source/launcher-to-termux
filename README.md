@@ -25,6 +25,10 @@ export DISPLAY=:0
 cd ~/launcher-to-termux
 python launcher.py
 
+or
+
+python launcher.py
+
 
 start serveur python -m http.server 8080     
 
