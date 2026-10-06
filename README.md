@@ -16,7 +16,14 @@ pip install pygame --no-binary :all: --no-build-isolation
 font = pygame.font.Font(None, 36)
 
 
-DISPLAY=:0 python ~/launcher-to-termux/launcher.py
+DISPLAY=:0 python ~/launcher-to-termux/launcher.py.
+
+or 
+
+termux-x11 :0 &
+export DISPLAY=:0
+cd ~/launcher-to-termux
+python launcher.py
 
 
 start serveur python -m http.server 8080     
